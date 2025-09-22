@@ -21,6 +21,7 @@ import LinkedInPreviewPage from "./pages/LinkedInPreviewPage.tsx";
 import NewsletterPreviewPage from "./pages/NewsletterPreviewPage.tsx";
 import CampGroundDetailPage from "./pages/CampGroundDetailPage.tsx";
 import DealsListingPage from "./pages/DealsListingPage.tsx";
+import DealDetail from "./pages/DealDetail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,10 @@ const BaseRouting: RouteObject[] = [
   {
     path: "campgrounds/deals",
     Component: DealsListingPage,
+  },
+  {
+    path: "deals/:slug",
+    Component: DealDetail,
   },
   {
     path: "services",
