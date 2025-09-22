@@ -1,6 +1,6 @@
 import { FC } from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import { Event } from "../../model";
+import { EventType as Event } from "../../model";
 import { formatDate } from "../../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../../utils/richtext";

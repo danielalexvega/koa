@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
 h1, h2, h3 {
-  @apply font-libre;
+  @apply font-sans;
 }
 
 :root {

@@ -1,5 +1,5 @@
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
-import { LanguageCodenames, type CallToAction } from "../model";
+import { LanguageCodenames, type CallToActionType as CallToAction } from "../model";
 import { createClient } from "../utils/client";
 import { useCallback, useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";

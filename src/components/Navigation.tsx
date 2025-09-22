@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { NavLink, useSearchParams } from "react-router";
 import { createClient } from "../utils/client";
-import { CollectionCodenames, LandingPage, LanguageCodenames } from "../model";
+import { CollectionCodenames, LandingPageType, LanguageCodenames } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { useAppContext } from "../context/AppContext";
@@ -14,7 +14,7 @@ const Navigation: FC = () => {
 
   const lang = searchParams.get("lang");
   const collectionParam = searchParams.get("collection")
-  const collectionFilter = collectionParam ?? collection ?? "patient_resources";
+  const collectionFilter = collectionParam ?? collection ?? "default";
 
   const [navigation] = useSuspenseQueries({
     queries: [
@@ -22,19 +22,26 @@ const Navigation: FC = () => {
         queryKey: ["navigation"],
         queryFn: () =>
           createClient(environmentId, apiKey, isPreview)
-            .items<LandingPage>()
+            .items<LandingPageType>()
             .type("landing_page")
             .limitParameter(1)
             .languageParameter((lang ?? "default") as LanguageCodenames)
             .collections([collectionFilter as CollectionCodenames])
             .toPromise()
-            .then(res => res.data.items[0]?.elements.subpages.linkedItems.map(subpage => ({
-              name: subpage.elements.headline.value,
-              link: subpage.elements.url.value,
-            })))
+            .then(res => {
+              const landingPage = res.data.items[0];
+              if (!landingPage || !landingPage.elements.subpages.linkedItems) {
+                return [];
+              }
+              return landingPage.elements.subpages.linkedItems.map(subpage => ({
+                name: subpage.elements.headline.value,
+                link: subpage.elements.url.value,
+              }));
+            })
             .catch((err) => {
+              console.error("Navigation data fetch error:", err);
               if (err instanceof DeliveryError) {
-                return null;
+                return [];
               }
               throw err;
             }),
@@ -52,7 +59,9 @@ const Navigation: FC = () => {
     <nav>
       <menu className="flex flex-col lg:flex-row gap-5 lg:gap-[60px] items-center list-none">
         {
-          navigation.data?.map(({ name, link }) => createMenuLink(name, link))
+          navigation.data && navigation.data.length > 0 
+            ? navigation.data.map(({ name, link }) => createMenuLink(name, link))
+            : null
         }
       </menu>
     </nav>

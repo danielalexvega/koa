@@ -18,7 +18,7 @@ const HeroImage: FC<HeroImageProps> = ({ data, buttonLink }) => {
   return (
     <div className="burgundy-theme flex flex-col py-10 lg:py-0 lg:flex-row lg:gap-32">
       <div className="lg:basis-1/2 pt-10 lg:pt-[104px] pb-10 lg:pb-[160px] flex flex-col items-center lg:items-start gap-10">
-        <h1 className="text-center lg:text-left font-libre text-[64px] md:text-[94px] text-heading-1-color font-bold leading-[64px] md:leading-[78px]"
+        <h1 className="text-center lg:text-left font-sans text-[64px] md:text-[94px] text-heading-1-color font-bold leading-[64px] md:leading-[78px]"
           {...createItemSmartLink(data.itemId)}
           {...createElementSmartLink("headline")}
         >

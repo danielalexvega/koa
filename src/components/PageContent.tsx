@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CallToAction, Disclaimer, Video } from "../model";
+import { CallToActionType as CallToAction, DisclaimerType as Disclaimer, VideoType as Video } from "../model";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";

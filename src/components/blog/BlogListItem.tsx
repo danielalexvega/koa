@@ -35,7 +35,7 @@ const BlogListItem: React.FC<BlogListItemProps> = ({
         />
       </div>
       <div className="md:w-2/3 flex flex-col justify-center gap-5">
-        <h2 className="text-heading-2 font-libre text-burgundy mb-4">
+        <h2 className="text-heading-2 font-sans text-burgundy mb-4">
           {title}
         </h2>
         <div className="text-body-lg text-gray mb-4 max-w-3xl line-clamp-4">

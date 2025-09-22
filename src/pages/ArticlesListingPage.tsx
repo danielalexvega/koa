@@ -4,7 +4,7 @@ import { useAppContext } from "../context/AppContext";
 import { createClient } from "../utils/client";
 import { DeliveryError, ITaxonomyTerms } from "@kontent-ai/delivery-sdk";
 import ArticleList from "../components/articles/ArticleList";
-import { Page, Article, isArticleType, isGeneralHealthcareTopics, LanguageCodenames } from "../model";
+import { PageType, ArticleType, isArticleType, LanguageCodenames } from "../model";
 import { useSearchParams } from "react-router-dom";
 import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
 import { PortableText } from "@portabletext/react";
@@ -64,7 +64,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ image, title, publish
 
 const useArticlesListingPage = (isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
-  const [page, setPage] = useState<Page | null>(null);
+  const [page, setPage] = useState<PageType | null>(null);
 
   const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
     if (page) {
@@ -79,7 +79,7 @@ const useArticlesListingPage = (isPreview: boolean, lang: string | null) => {
           .then(res => res.data.items)
       ).then((updatedItem) => {
         if (updatedItem) {
-          setPage(updatedItem as Page);
+          setPage(updatedItem as PageType);
         }
       });
     }
@@ -87,7 +87,7 @@ const useArticlesListingPage = (isPreview: boolean, lang: string | null) => {
 
   useEffect(() => {
     createClient(environmentId, apiKey, isPreview)
-      .item<Page>("research")
+      .item<PageType>("research")
       .languageParameter((lang ?? "default") as LanguageCodenames)
       .toPromise()
       .then(res => {
@@ -109,7 +109,7 @@ const useArticlesListingPage = (isPreview: boolean, lang: string | null) => {
 
 const useArticles = (isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<ArticleType[]>([]);
 
   const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
     // Update the specific article in the list
@@ -128,7 +128,7 @@ const useArticles = (isPreview: boolean, lang: string | null) => {
           ).then((updatedItem) => {
             if (updatedItem) {
               setArticles(prev => prev.map(a =>
-                a.system.codename === data.item.codename ? updatedItem as Article : a
+                a.system.codename === data.item.codename ? updatedItem as ArticleType : a
               ));
             }
           });
@@ -141,7 +141,7 @@ const useArticles = (isPreview: boolean, lang: string | null) => {
 
   useEffect(() => {
     createClient(environmentId, apiKey, isPreview)
-      .items<Article>()
+      .items<ArticleType>()
       .type("article")
       .languageParameter((lang ?? "default") as LanguageCodenames)
       .toPromise()
@@ -191,7 +191,7 @@ const useArticleTopics = (isPreview: boolean) => {
 
   useEffect(() => {
     createClient(environmentId, apiKey, isPreview)
-      .taxonomy("general_healthcare_topics")
+      .taxonomy("event_topic")
       .toPromise()
       .then(res => {
         setTopics(res.data.taxonomy);
@@ -223,7 +223,7 @@ const ArticlesListingPage: React.FC = () => {
   const [articleTopic, setArticleTopic] = useState<string>("All");
 
   const articleTypeCodename = searchParams.get("type");
-  const articleTopicCodename = searchParams.get("topic");
+  // const articleTopicCodename = searchParams.get("topic");
 
   const handleArticleTypeChange = (option: SelectorOption) => {
     setArticleType(option.label);
@@ -254,7 +254,7 @@ const ArticlesListingPage: React.FC = () => {
             .limitParameter(1)
             .toPromise()
             .then(res =>
-              res.data.items[0] as Replace<Page, { elements: Partial<Page["elements"]> }> ?? null
+              res.data.items[0] as Replace<PageType, { elements: Partial<PageType["elements"]> }> ?? null
             )
             .catch((err) => {
               if (err instanceof DeliveryError) {
@@ -340,7 +340,8 @@ const ArticlesListingPage: React.FC = () => {
             }}
             title={featuredArticle.elements.title.value}
             published={featuredArticle.elements.publish_date.value ?? ""}
-            tags={featuredArticle.elements.topics.value.map(t => t.name)}
+            // tags={featuredArticle.elements.topics.value.map((t: GeneralHealthcareTopics) => t.name)}
+            tags={[]}
             description={featuredArticle.elements.introduction.value}
             urlSlug={featuredArticle.elements.url_slug.value}
             itemId={featuredArticle.system.id}
@@ -379,16 +380,16 @@ const ArticlesListingPage: React.FC = () => {
           <ArticleList
             articles={articles.filter(a =>
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              isArticleType(articleTypeCodename)
+              isArticleType(articleTypeCodename as unknown as ArticleType)
                 ? a.elements.article_type.value[0]?.codename === articleTypeCodename
                 : true
             )
-              .filter(a =>
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                isGeneralHealthcareTopics(articleTopicCodename)
-                  ? a.elements.topics.value.find(t => t.codename === articleTopicCodename)
-                  : true
-              )
+              // .filter(a =>
+              //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              //   isGeneralHealthcareTopics(articleTopicCodename as unknown as GeneralHealthcareTopics)
+              //     ? a.elements.topics.value.find(t => t.codename === articleTopicCodename)
+              //     : true
+              // )
               .map(article => ({
                 image: {
                   url: article.elements.image.value[0]?.url ?? "",

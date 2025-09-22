@@ -10,7 +10,7 @@ const Footer: FC = () => (
       <Navigation />
     </div>
     <Divider />
-    <p className="text-[16px] text-gray-light mx-auto w-fit py-[60px]">©2024 Karma Health, LLC. All Rights Reserved.</p>
+    <p className="text-[16px] text-gray-light mx-auto w-fit py-[60px]">©2025 Kontent.ai Demo, LLC. All Rights Reserved.</p>
   </footer>
 );
 

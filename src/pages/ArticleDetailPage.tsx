@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { Article, LanguageCodenames } from "../model";
+import { ArticleType as Article, LanguageCodenames } from "../model";
 import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
 import { NavLink } from "react-router";

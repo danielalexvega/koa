@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import PageSection from "../components/PageSection";
 import { useAppContext } from "../context/AppContext";
 import { createClient } from "../utils/client";
-import { LanguageCodenames, Page, Service } from "../model";
+import { LanguageCodenames, PageType as Page, ServiceType as Service } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import ServiceList from "../components/services/ServiceList";
 import { useSearchParams } from "react-router-dom";
