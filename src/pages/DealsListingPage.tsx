@@ -174,6 +174,7 @@ const DealsListingPage: React.FC = () => {
         return <div className="flex-grow" />;
     }
 
+
     return (
         <div className="flex flex-col">
             {/* Hero Section */}
@@ -197,7 +198,7 @@ const DealsListingPage: React.FC = () => {
                                     dealTitle={deal.elements.deal_title?.value || ""}
                                     startDate={deal.elements.start?.value || ""}
                                     endDate={deal.elements.end?.value || ""}
-                                    body={deal.elements.body?.value}
+                                    body={deal.elements.body?.value || ""}
                                     dealImage={deal.elements.deal_image?.value?.[0] ? {
                                         url: deal.elements.deal_image.value[0].url,
                                         alt: deal.elements.deal_image.value[0].description || undefined

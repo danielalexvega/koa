@@ -2,9 +2,6 @@ import React, { useCallback } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { PortableText } from "@portabletext/react";
-import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
 import { useCustomRefresh, useLivePreview } from "../context/SmartLinkContext";
 import {
@@ -13,10 +10,10 @@ import {
 } from "../utils/smartlink";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-// import Deal from "../components/deal/Deal";
+import Deal from "../components/deal/Deal";
 import { DealsType, LanguageCodenames } from "../model";
 
-const BlogDetail: React.FC = () => {
+const DealDetail: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
@@ -90,44 +87,28 @@ const BlogDetail: React.FC = () => {
     return <div className="flex-grow" />;
   }
 
-  const createTag = (tag: string) => (
-    <div className="w-fit text-small border tracking-wider font-[700] text-grey border-azure px-4 py-2 rounded-lg uppercase">
-      {tag}
-    </div>
-  );
 
   return (
-    <div className="container flex flex-col gap-12 px-3">
-      <div className="flex flex-row items-center pt-[104px] pb-[160px]">
-        <div className="flex flex-col flex-1 gap-6 ">
-          {createTag("Deal")}
-          <h1 className="text-heading-1 text-heading-1-color mb-6 max-w-[12ch]"
-          {...createItemSmartLink(deal.system.id)}
-          {...createElementSmartLink("title")}
-          >
-            {deal.elements.deal_title?.value}
-          </h1>
-        </div>
-        <div className="flex flex-col flex-1">
-          <img
-            width={670}
-            height={440}
-            src={deal.elements.deal_image?.value[0]?.url}
-            alt={deal.elements.deal_image?.value[0]?.description ?? ""}
-            className="rounded-lg"
-          />
-        </div>
-      </div>
-      <div className="rich-text-body max-w-3xl mx-auto flex flex-col gap-5"
-      {...createItemSmartLink(deal.system.id)}
-      {...createElementSmartLink("body")}>
-        <PortableText
-          value={transformToPortableText(deal.elements.body?.value)}
-          components={defaultPortableRichTextResolvers}
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      {/* Deal Component */}
+      <div 
+        {...createItemSmartLink(deal.system.id)}
+        {...createElementSmartLink("deal_title")}
+      >
+        <Deal
+          dealTitle={deal.elements.deal_title?.value || ""}
+          startDate={deal.elements.start?.value || ""}
+          endDate={deal.elements.end?.value || ""}
+          body={deal.elements.body?.value || ""}
+          dealImage={deal.elements.deal_image?.value[0] ? {
+            url: deal.elements.deal_image.value[0].url,
+            alt: deal.elements.deal_image.value[0].description || deal.elements.deal_title?.value || ""
+          } : undefined}
+          showReserveButton={true}
         />
       </div>
     </div>
   );
 };
 
-export default BlogDetail;
+export default DealDetail;

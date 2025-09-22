@@ -1,18 +1,15 @@
 import React from "react";
-import { PortableText } from "@portabletext/react";
-import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { defaultPortableRichTextResolvers } from "../../utils/richtext";
 
 interface DealProps {
   dealTitle: string;
   startDate: string;
   endDate: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body: any; // Rich text content from Kontent.ai
+  body: string; // Plain text content
   dealImage?: {
     url: string;
     alt?: string;
   };
+  showReserveButton?: boolean; // Optional prop to show/hide the Reserve Now button
 }
 
 const Deal: React.FC<DealProps> = ({
@@ -21,6 +18,7 @@ const Deal: React.FC<DealProps> = ({
   endDate,
   body,
   dealImage,
+  showReserveButton = true,
 }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -67,10 +65,10 @@ const Deal: React.FC<DealProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 max-w-sm w-full">
       {/* Deal Image */}
       {dealImage && (
-        <div className="aspect-video w-full overflow-hidden">
+        <div className="w-full overflow-hidden h-[365px] text-center">
           <img
             src={dealImage.url}
             alt={dealImage.alt || dealTitle}
@@ -105,11 +103,21 @@ const Deal: React.FC<DealProps> = ({
         {/* Body Content */}
         {body && (
           <div className="prose prose-sm max-w-none">
-            <PortableText
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              value={transformToPortableText(body as any)}
-              components={defaultPortableRichTextResolvers}
-            />
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              {body}
+            </p>
+          </div>
+        )}
+
+        {/* Reserve Now Button */}
+        {showReserveButton && (
+          <div className="mt-6 text-center">
+            <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-lg uppercase tracking-wide transition-colors duration-200 flex items-center mx-auto">
+              Reserve Now
+              <svg className="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
           </div>
         )}
       </div>
