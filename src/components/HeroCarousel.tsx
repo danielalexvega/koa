@@ -77,7 +77,7 @@ const HeroCarousel: FC<HeroCarouselProps> = ({ heroes }) => {
           {/* Button */}
           {buttonLabel && link && (
             <a
-              href={createPreviewLink((link.elements as any).url?.value || "#", isPreview)}
+              href={createPreviewLink((link.elements as { url?: { value?: string } }).url?.value || "#", isPreview)}
               className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-colors duration-200 shadow-lg"
             >
               {buttonLabel}

@@ -7,7 +7,7 @@ interface DealProps {
   dealTitle: string;
   startDate: string;
   endDate: string;
-  body: any; // Rich text content
+  body: unknown; // Rich text content
   dealImage?: {
     url: string;
     alt?: string;
