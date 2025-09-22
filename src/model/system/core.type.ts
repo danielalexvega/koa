@@ -13,15 +13,13 @@
 * -------------------------------------------------------------------------------
 **/
 
-import type { IContentItem, IContentItemElements, IDeliveryClient } from "@kontent-ai/delivery-sdk";
+import type { IContentItem, IContentItemElements } from "@kontent-ai/delivery-sdk";
 import type {
   ContentTypeCodenames,
   CollectionCodenames,
   LanguageCodenames,
   WorkflowCodenames,
   WorkflowStepCodenames,
-  ElementCodenames,
-  TaxonomyCodenames,
 } from "./delivery.codenames.ts";
 
 /**
@@ -40,21 +38,4 @@ export type CoreContentType<
   WorkflowStepCodenames
 >;
 
-/**
- * Core types for 'IDeliveryClient'
- */
-export type CoreClientTypes = {
-  readonly collectionCodenames: CollectionCodenames;
-  readonly contentItemType: CoreContentType;
-  readonly contentTypeCodenames: ContentTypeCodenames;
-  readonly elementCodenames: ElementCodenames;
-  readonly languageCodenames: LanguageCodenames;
-  readonly taxonomyCodenames: TaxonomyCodenames;
-  readonly workflowCodenames: WorkflowCodenames;
-  readonly workflowStepCodenames: WorkflowStepCodenames;
-};
-
-/**
- * Typed delivery client in favor of default 'IDeliveryClient'
- */
-export type CoreDeliveryClient = IDeliveryClient<CoreClientTypes>;
+// CoreClientTypes and CoreDeliveryClient are now defined in main.system.generated.ts

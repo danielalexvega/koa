@@ -1,5 +1,5 @@
 import { createDeliveryClient } from "@kontent-ai/delivery-sdk";
-import { CoreClientTypes } from "../model";
+import { CoreClientTypes } from "../model/system/main.system.generated";
 
 const url = !import.meta.env.VITE_KONTENT_URL ? "kontent.ai" : import.meta.env.VITE_KONTENT_URL;
 

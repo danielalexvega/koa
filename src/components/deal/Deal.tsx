@@ -7,7 +7,8 @@ interface DealProps {
   dealTitle: string;
   startDate: string;
   endDate: string;
-  body: unknown; // Rich text content
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  body: any; // Rich text content from Kontent.ai
   dealImage?: {
     url: string;
     alt?: string;
@@ -105,7 +106,8 @@ const Deal: React.FC<DealProps> = ({
         {body && (
           <div className="prose prose-sm max-w-none">
             <PortableText
-              value={transformToPortableText(body)}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              value={transformToPortableText(body as any)}
               components={defaultPortableRichTextResolvers}
             />
           </div>
